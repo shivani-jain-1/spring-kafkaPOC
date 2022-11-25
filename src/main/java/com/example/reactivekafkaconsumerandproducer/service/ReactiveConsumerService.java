@@ -16,13 +16,13 @@ import reactor.core.publisher.Flux;
 public class ReactiveConsumerService implements CommandLineRunner {
     Logger log = LoggerFactory.getLogger(ReactiveConsumerService.class);
 
-    private final ReactiveKafkaConsumerTemplate<String, FakeConsumerDTO> reactiveKafkaConsumerTemplate;
+    private final ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate;
 
-    public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, FakeConsumerDTO> reactiveKafkaConsumerTemplate) {
+    public ReactiveConsumerService(ReactiveKafkaConsumerTemplate<String, String> reactiveKafkaConsumerTemplate) {
         this.reactiveKafkaConsumerTemplate = reactiveKafkaConsumerTemplate;
     }
 
-    private Flux<FakeConsumerDTO> consumeFakeConsumerDTO() {
+    private Flux<String> consumeFakeConsumerDTO() {
         return reactiveKafkaConsumerTemplate
                 .receiveAutoAck()
                 // .delayElements(Duration.ofSeconds(2L)) // BACKPRESSURE
@@ -33,7 +33,7 @@ public class ReactiveConsumerService implements CommandLineRunner {
                         consumerRecord.offset())
                 )
                 .map(ConsumerRecord::value)
-                .doOnNext(fakeConsumerDTO -> log.info("successfully consumed {}={}", FakeConsumerDTO.class.getSimpleName(), fakeConsumerDTO))
+                .doOnNext(fakeConsumerDTO -> log.info("successfully consumed {}={}", String.class.getSimpleName(), fakeConsumerDTO))
                 .doOnError(throwable -> log.error("something bad happened while consuming : {}", throwable.getMessage()));
     }
 

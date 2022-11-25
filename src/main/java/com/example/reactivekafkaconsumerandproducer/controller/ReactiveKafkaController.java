@@ -18,9 +18,9 @@ public class ReactiveKafkaController {
     @GetMapping("/reactive-publish")
     public void writeMessageToTopic(@RequestParam String id){
         log.info("in reactive controller...");
-        FakeProducerDTO dto = new FakeProducerDTO(id);
+        //FakeProducerDTO dto = new FakeProducerDTO(id);
 
-        this.producer.send(dto);
+        this.producer.send(id);
     }
 
 }

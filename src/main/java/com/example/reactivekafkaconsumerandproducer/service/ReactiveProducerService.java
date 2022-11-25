@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 public class ReactiveProducerService {
 
     private final Logger log = LoggerFactory.getLogger(ReactiveProducerService.class);
-    private final ReactiveKafkaProducerTemplate<String, FakeProducerDTO> reactiveKafkaProducerTemplate;
+    private final ReactiveKafkaProducerTemplate<String, String> reactiveKafkaProducerTemplate;
 
     @Value(value = "${FAKE_PRODUCER_DTO_TOPIC}")
     private String topic;
 
-    public ReactiveProducerService(ReactiveKafkaProducerTemplate<String, FakeProducerDTO> reactiveKafkaProducerTemplate) {
+    public ReactiveProducerService(ReactiveKafkaProducerTemplate<String, String> reactiveKafkaProducerTemplate) {
         this.reactiveKafkaProducerTemplate = reactiveKafkaProducerTemplate;
     }
 
-    public void send(FakeProducerDTO fakeProducerDTO) {
-        log.info("send to topic={}, {}={},", topic, FakeProducerDTO.class.getSimpleName(), fakeProducerDTO);
+    public void send(String fakeProducerDTO) {
+        log.info("send to topic={}, {}={},", topic, String.class.getSimpleName(),fakeProducerDTO);
         reactiveKafkaProducerTemplate.send(topic, fakeProducerDTO)
                 .doOnSuccess(senderResult -> log.info("sent {} offset : {}", fakeProducerDTO, senderResult.recordMetadata().offset()))
                 .subscribe();

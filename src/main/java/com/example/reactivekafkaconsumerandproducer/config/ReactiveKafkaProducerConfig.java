@@ -12,9 +12,9 @@ import java.util.Map;
 @Configuration
 public class ReactiveKafkaProducerConfig {
     @Bean
-    public ReactiveKafkaProducerTemplate<String, FakeProducerDTO> reactiveKafkaProducerTemplate(
+    public ReactiveKafkaProducerTemplate<String, String> reactiveKafkaProducerTemplate(
             KafkaProperties properties) {
         Map<String, Object> props = properties.buildProducerProperties();
-        return new ReactiveKafkaProducerTemplate<String, FakeProducerDTO>(SenderOptions.create(props));
+        return new ReactiveKafkaProducerTemplate<String, String>(SenderOptions.create(props));
     }
 }
